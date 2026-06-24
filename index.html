@@ -238,30 +238,100 @@ footer p{font-size:11px;color:rgba(255,255,255,.15);}
 
 /* MOBILE */
 @media(max-width:900px){
+  /* Basis */
   body{cursor:auto;}
   #cur,#cur-ring{display:none;}
+
+  /* Nav */
   nav{padding:0 20px;}
   .nav-links{display:none;}
+
+  /* Hero */
   .hero{grid-template-columns:1fr;height:auto;}
-  .hero-left{padding:80px 24px 52px;}
-  .hero-right{height:55vw;}
-  .pos-sec{grid-template-columns:1fr;padding:72px 24px;gap:48px;}
+  .hero-left{padding:88px 24px 80px;}
+  .hero-right{height:60vw;}
+  .hero-h1{font-size:clamp(44px,13vw,72px);}
+  .hero-sub{font-size:14px;}
+  .hero-scroll{left:24px;bottom:28px;}
+
+  /* Positionering */
+  .pos-sec{grid-template-columns:1fr;padding:60px 24px;gap:40px;}
+  .pos-h2{font-size:clamp(32px,9vw,48px);}
+  .compare-head-cell{padding:10px 14px;font-size:11px;}
+  .compare-cell{padding:12px 14px;font-size:12px;}
+
+  /* Team */
   .team-overlay{padding:28px 24px;grid-template-columns:1fr;}
   .team-names{display:none;}
-  .diensten-wrap{grid-template-columns:1fr;}
-  .diensten-sticky{position:relative;height:auto;padding:52px 24px;}
-  .dienst-item{padding:48px 24px;}
-  .verhaal-sec{padding:80px 24px;}
-  .verhaal-grid{grid-template-columns:1fr;gap:48px;}
-  .werkwijze-sec{padding:80px 24px;}
-  .timeline::before{left:16px;}
-  .tl-row{grid-template-columns:16px 1fr;}
-  .tl-left{display:none;}
-  .tl-dot{justify-content:flex-start;}
-  .tl-right{padding-left:20px;transform:none;}
+  .team-line{font-size:14px;}
+
+  /* Diensten sticky */
+  .diensten-wrap{display:block;}
+  .diensten-sticky{position:relative !important;height:auto !important;padding:40px 24px;min-height:unset;}
+  .sticky-num{display:none;}
+  .sticky-sparks{display:none;}
+  .sticky-glow{display:none;}
+  .diensten-big{font-size:40px;}
+  .dienst-item{padding:40px 24px;min-height:unset !important;}
+  .foto-placeholder{min-height:180px !important;}
+
+  /* Verhaal */
+  .verhaal-sec{padding:64px 24px;}
+  .verhaal-grid{grid-template-columns:1fr;gap:32px;}
+  .verhaal-wm{font-size:80px;}
+  .verhaal-quote{font-size:clamp(32px,9vw,48px);}
+
+  /* Werkwijze — timeline volledig herschreven voor mobiel */
+  .werkwijze-sec{padding:64px 24px;}
+  .werk-h2{font-size:clamp(40px,11vw,60px);}
+  .timeline::before{left:4px;transform:none;}
+  .tl-row{
+    display:block;
+    position:relative;
+    padding-left:28px;
+    margin-bottom:40px;
+  }
+  .tl-row:last-child{margin-bottom:0;}
+  /* Toon BEIDE kanten als blok — links en rechts hebben elk content */
+  .tl-left{
+    display:block !important;
+    text-align:left !important;
+    padding:0 !important;
+    transform:none !important;
+    opacity:1 !important;
+  }
+  .tl-right{
+    display:block !important;
+    text-align:left !important;
+    padding:0 !important;
+    transform:none !important;
+    opacity:1 !important;
+  }
+  /* Lege cellen weggooien */
+  .tl-empty{display:none !important;}
+  /* Dot absoluut links */
+  .tl-dot{
+    position:absolute;
+    left:0;
+    top:5px;
+    display:flex !important;
+    justify-content:flex-start;
+    padding:0;
+  }
+  .tl-step{font-size:20px;}
+
+  /* CTA balk */
   .cta-balk{padding:48px 24px;flex-direction:column;align-items:flex-start;}
-  .contact-sec{padding:80px 24px;}
+  .cta-balk h2{font-size:clamp(28px,9vw,44px);}
+
+  /* Contact */
+  .contact-sec{padding:64px 24px;}
+  .contact-h2{font-size:clamp(44px,12vw,64px);}
+  .contact-grid{grid-template-columns:1fr;gap:48px;}
   .form-row{grid-template-columns:1fr;}
+  #btnWA,#btnMail{font-size:15px;padding:14px 24px;}
+
+  /* Footer */
   footer{padding:28px 24px;flex-direction:column;text-align:center;}
 }
 
