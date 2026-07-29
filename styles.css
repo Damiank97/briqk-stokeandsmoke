@@ -1299,7 +1299,23 @@ summary {
 
   .site-header {
     height: 66px;
-    box-shadow: 0 -100px 0 100px var(--ink);
+  }
+
+  .site-header::before {
+    content: "";
+    position: fixed;
+    z-index: 0;
+    top: -220px;
+    right: 0;
+    left: 0;
+    height: 286px;
+    background: var(--ink);
+    pointer-events: none;
+  }
+
+  .nav-shell {
+    position: relative;
+    z-index: 1;
   }
 
   .menu-toggle {
