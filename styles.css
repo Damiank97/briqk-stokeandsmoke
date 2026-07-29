@@ -275,7 +275,7 @@ summary {
   color: var(--cream);
 }
 
-.menu-toggle > span[aria-hidden] {
+.menu-toggle > .menu-line {
   display: block;
   width: 20px;
   height: 1px;
@@ -1305,18 +1305,27 @@ summary {
   .menu-toggle {
     display: block;
     position: relative;
-    z-index: 2;
+    z-index: 3;
+  }
+
+  .brand {
+    position: relative;
+    z-index: 3;
   }
 
   .site-nav {
     position: fixed;
+    z-index: 2;
     inset: 0;
+    min-height: 100dvh;
     padding: 110px 24px 40px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    background: rgba(16, 11, 8, 0.985);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--ink);
     visibility: hidden;
     opacity: 0;
     transform: translateY(-12px);
@@ -1345,11 +1354,11 @@ summary {
     text-align: center;
   }
 
-  .menu-toggle[aria-expanded="true"] > span[aria-hidden]:first-of-type {
+  .menu-toggle[aria-expanded="true"] > .menu-line-top {
     transform: translateY(3.5px) rotate(45deg);
   }
 
-  .menu-toggle[aria-expanded="true"] > span[aria-hidden]:last-of-type {
+  .menu-toggle[aria-expanded="true"] > .menu-line-bottom {
     transform: translateY(-3.5px) rotate(-45deg);
   }
 
