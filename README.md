@@ -2,6 +2,11 @@
 
 Verbeterde, responsive one-page website voor Stoke & Smoke BBQ Catering.
 
+De hero bevat een paginabrede vuurbeleving met ember-deeltjes, burn-in typografie,
+een custom cursor, magnetische CTA's en subtiele parallax. Op mobiel en bij de
+instelling `prefers-reduced-motion` worden zware pointer- en bewegingseffecten
+automatisch verminderd.
+
 ## Lokaal bekijken
 
 Start in deze map een eenvoudige webserver:

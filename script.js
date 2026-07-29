@@ -1,3 +1,133 @@
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const desktopEffects = finePointer && !reduceMotion && window.innerWidth > 980;
+const root = document.documentElement;
+
+const emberField = document.getElementById("ember-field");
+if (emberField && !reduceMotion) {
+  const emberCount = window.innerWidth < 700 ? 18 : 36;
+  const colors = ["#ee8a0a", "#ffb43f", "#ff6a00", "#ffd07a"];
+
+  for (let index = 0; index < emberCount; index += 1) {
+    const ember = document.createElement("i");
+    ember.className = "ember";
+    ember.style.left = `${4 + Math.random() * 88}%`;
+    ember.style.setProperty("--size", `${1.5 + Math.random() * 3.2}px`);
+    ember.style.setProperty("--duration", `${5.5 + Math.random() * 8}s`);
+    ember.style.setProperty("--delay", `${-Math.random() * 10}s`);
+    ember.style.setProperty("--rise", `${-(180 + Math.random() * 520)}px`);
+    ember.style.setProperty("--drift", `${-80 + Math.random() * 160}px`);
+    ember.style.setProperty("--opacity", `${0.35 + Math.random() * 0.62}`);
+    ember.style.setProperty("--color", colors[Math.floor(Math.random() * colors.length)]);
+    emberField.appendChild(ember);
+  }
+}
+
+document.querySelectorAll("[data-burn]").forEach((line, lineIndex) => {
+  if (reduceMotion) return;
+  const text = line.textContent.trim();
+  line.textContent = "";
+  line.setAttribute("aria-hidden", "true");
+
+  [...text].forEach((character, characterIndex) => {
+    const span = document.createElement("span");
+    span.className = "burn-char";
+    span.textContent = character === " " ? "\u00a0" : character;
+    span.style.setProperty("--char-delay", `${0.18 + lineIndex * 0.28 + characterIndex * 0.035}s`);
+    line.appendChild(span);
+  });
+});
+
+if (desktopEffects) {
+  root.classList.add("has-custom-cursor");
+  const cursorDot = document.querySelector(".cursor-dot");
+  const cursorRing = document.querySelector(".cursor-ring");
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let ringX = mouseX;
+  let ringY = mouseY;
+  let lastTrail = 0;
+
+  function animateCursor() {
+    ringX += (mouseX - ringX) * 0.13;
+    ringY += (mouseY - ringY) * 0.13;
+    if (cursorRing) {
+      cursorRing.style.left = `${ringX}px`;
+      cursorRing.style.top = `${ringY}px`;
+    }
+    requestAnimationFrame(animateCursor);
+  }
+
+  document.addEventListener("pointermove", (event) => {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+    root.classList.toggle("cursor-hover", Boolean(event.target.closest?.("a, button, summary")));
+    if (cursorDot) {
+      cursorDot.style.left = `${mouseX}px`;
+      cursorDot.style.top = `${mouseY}px`;
+    }
+
+    const now = performance.now();
+    if (now - lastTrail > 46) {
+      lastTrail = now;
+      const trail = document.createElement("i");
+      trail.className = "cursor-ember";
+      trail.style.left = `${mouseX}px`;
+      trail.style.top = `${mouseY}px`;
+      trail.style.setProperty("--trail-x", `${-8 + Math.random() * 16}px`);
+      trail.style.setProperty("--trail-y", `${12 + Math.random() * 22}px`);
+      document.body.appendChild(trail);
+      trail.addEventListener("animationend", () => trail.remove(), { once: true });
+    }
+  }, { passive: true });
+
+  document.addEventListener("pointerover", (event) => {
+    root.classList.toggle("cursor-hover", Boolean(event.target.closest("a, button, summary")));
+  });
+
+  document.addEventListener("pointerout", (event) => {
+    if (!event.relatedTarget?.closest?.("a, button, summary")) {
+      root.classList.remove("cursor-hover");
+    }
+  });
+
+  animateCursor();
+}
+
+document.querySelectorAll("[data-magnetic]").forEach((element) => {
+  if (!desktopEffects) return;
+  element.addEventListener("pointermove", (event) => {
+    const bounds = element.getBoundingClientRect();
+    const x = (event.clientX - bounds.left - bounds.width / 2) * 0.18;
+    const y = (event.clientY - bounds.top - bounds.height / 2) * 0.18;
+    element.style.setProperty("--magnetic-x", `${x}px`);
+    element.style.setProperty("--magnetic-y", `${y}px`);
+  });
+  element.addEventListener("pointerleave", () => {
+    element.style.setProperty("--magnetic-x", "0px");
+    element.style.setProperty("--magnetic-y", "0px");
+  });
+});
+
+const hero = document.querySelector(".hero");
+const heroMedia = document.querySelector(".hero-media");
+if (hero && heroMedia && desktopEffects) {
+  hero.addEventListener("pointermove", (event) => {
+    const bounds = hero.getBoundingClientRect();
+    const relativeX = (event.clientX - bounds.left) / bounds.width;
+    const relativeY = (event.clientY - bounds.top) / bounds.height;
+    hero.style.setProperty("--mouse-x", `${relativeX * 100}%`);
+    hero.style.setProperty("--mouse-y", `${relativeY * 100}%`);
+    heroMedia.style.setProperty("--parallax-x", `${(relativeX - 0.5) * -12}px`);
+    heroMedia.style.setProperty("--parallax-y", `${(relativeY - 0.5) * -9}px`);
+  }, { passive: true });
+
+  hero.addEventListener("pointerleave", () => {
+    heroMedia.style.setProperty("--parallax-x", "0px");
+    heroMedia.style.setProperty("--parallax-y", "0px");
+  });
+}
+
 const header = document.querySelector(".site-header");
 const menuButton = document.querySelector(".menu-toggle");
 const siteMenu = document.querySelector(".site-nav");

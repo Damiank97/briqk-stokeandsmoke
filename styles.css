@@ -36,8 +36,93 @@ body {
   overflow-x: hidden;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 9997;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
 body.menu-open {
   overflow: hidden;
+}
+
+html.has-custom-cursor,
+html.has-custom-cursor a,
+html.has-custom-cursor button,
+html.has-custom-cursor summary {
+  cursor: none;
+}
+
+html.has-custom-cursor input,
+html.has-custom-cursor textarea {
+  cursor: text;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  z-index: 10001;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.22s ease, height 0.22s ease, border-color 0.22s ease, opacity 0.2s ease;
+}
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--ember);
+  box-shadow: 0 0 14px rgba(238, 138, 10, 0.9), 0 0 32px rgba(238, 138, 10, 0.38);
+  mix-blend-mode: screen;
+}
+
+.cursor-ring {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(238, 138, 10, 0.46);
+}
+
+html.has-custom-cursor .cursor-dot,
+html.has-custom-cursor .cursor-ring {
+  opacity: 1;
+}
+
+html.cursor-hover .cursor-dot {
+  width: 15px;
+  height: 15px;
+}
+
+html.cursor-hover .cursor-ring {
+  width: 50px;
+  height: 50px;
+  border-color: rgba(238, 138, 10, 0.82);
+}
+
+.cursor-ember {
+  position: fixed;
+  z-index: 10000;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ffb84a;
+  box-shadow: 0 0 8px rgba(238, 138, 10, 0.95);
+  pointer-events: none;
+  animation: cursor-ember 0.72s ease-out forwards;
+}
+
+@keyframes cursor-ember {
+  to {
+    opacity: 0;
+    transform: translate3d(var(--trail-x), var(--trail-y), 0) scale(0.15);
+  }
 }
 
 img {
@@ -116,7 +201,8 @@ summary {
 }
 
 .nav-shell {
-  width: var(--page);
+  width: calc(100% - 104px);
+  max-width: none;
   height: 100%;
   margin-inline: auto;
   display: flex;
@@ -195,20 +281,132 @@ summary {
 }
 
 .hero {
-  min-height: 100svh;
+  --mouse-x: 24%;
+  --mouse-y: 72%;
+  height: 100svh;
+  min-height: 760px;
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+  grid-template-columns: minmax(0, 52%) minmax(360px, 48%);
   padding-top: 72px;
+  overflow: hidden;
   background:
     radial-gradient(circle at 20% 90%, rgba(238, 138, 10, 0.12), transparent 28%),
     var(--ink);
 }
 
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle 360px at var(--mouse-x) var(--mouse-y), rgba(238, 138, 10, 0.12), transparent 68%);
+  transition: opacity 0.3s ease;
+}
+
+.hero::after {
+  display: none;
+}
+
+.hero-effects {
+  position: absolute;
+  z-index: 1;
+  inset: 72px 0 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-glow {
+  position: absolute;
+  right: -15%;
+  bottom: -190px;
+  left: -15%;
+  height: 480px;
+  opacity: 0.8;
+  background: radial-gradient(ellipse 72% 60% at 48% 100%, rgba(238, 138, 10, 0.27) 0%, rgba(184, 91, 0, 0.09) 42%, transparent 72%);
+  filter: blur(10px);
+  animation: fire-breathe 4.8s ease-in-out infinite alternate;
+}
+
+@keyframes fire-breathe {
+  to {
+    opacity: 1;
+    transform: scale3d(1.08, 1.16, 1);
+  }
+}
+
+.smoke {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  opacity: 0.055;
+  background: radial-gradient(circle, rgba(245, 237, 223, 0.86), transparent 66%);
+  filter: blur(34px);
+  animation: smoke-drift 13s ease-in-out infinite alternate;
+}
+
+.smoke-one {
+  bottom: -230px;
+  left: 2%;
+}
+
+.smoke-two {
+  right: -170px;
+  bottom: -180px;
+  animation-delay: -6s;
+  animation-duration: 17s;
+}
+
+@keyframes smoke-drift {
+  to {
+    opacity: 0.1;
+    transform: translate3d(70px, -190px, 0) scale(1.22);
+  }
+}
+
+.ember-field {
+  position: absolute;
+  inset: 0;
+}
+
+.ember {
+  position: absolute;
+  bottom: -10px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  opacity: 0;
+  background: var(--color);
+  box-shadow: 0 0 8px var(--color), 0 0 18px rgba(238, 138, 10, 0.62);
+  animation: ember-rise var(--duration) var(--delay) ease-in infinite;
+}
+
+@keyframes ember-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  12% {
+    opacity: var(--opacity);
+  }
+  72% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift), var(--rise), 0) scale(0.08);
+  }
+}
+
 .hero-copy {
+  position: relative;
+  z-index: 3;
   align-self: center;
-  width: min(680px, calc(100% - 104px));
-  margin-left: max(52px, calc((100vw - 1180px) / 2));
-  padding: 70px 44px 70px 0;
+  width: min(760px, calc(100% - 72px));
+  margin-left: clamp(36px, 4vw, 76px);
+  padding: 70px 42px 92px 0;
 }
 
 .eyebrow {
@@ -239,9 +437,37 @@ summary {
 }
 
 .hero h1 {
-  max-width: 650px;
-  font-size: clamp(64px, 7.3vw, 116px);
+  max-width: 760px;
+  font-size: clamp(66px, 7.1vw, 132px);
   text-wrap: balance;
+}
+
+.burn-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.burn-char {
+  display: inline-block;
+  opacity: 0;
+  filter: brightness(3.4) blur(3px);
+  text-shadow: 0 0 18px rgba(238, 138, 10, 0.95), 0 0 38px rgba(238, 138, 10, 0.44);
+  transform: translateY(12px) scale(1.08);
+  animation: burn-in 0.42s var(--char-delay) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes burn-in {
+  58% {
+    opacity: 1;
+    filter: brightness(1.8) blur(0.5px);
+    text-shadow: 0 0 15px rgba(238, 138, 10, 0.72);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) blur(0);
+    text-shadow: none;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .hero h1 em,
@@ -290,6 +516,17 @@ summary {
 
 .button:hover {
   transform: translateY(-2px);
+}
+
+.magnetic {
+  --magnetic-x: 0px;
+  --magnetic-y: 0px;
+  transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0);
+  will-change: transform;
+}
+
+.magnetic:hover {
+  transform: translate3d(var(--magnetic-x), calc(var(--magnetic-y) - 2px), 0);
 }
 
 .button-primary {
@@ -343,8 +580,11 @@ summary {
 }
 
 .hero-media {
-  position: relative;
-  min-height: 560px;
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  position: absolute;
+  z-index: 0;
+  inset: 72px 0 0;
   overflow: hidden;
 }
 
@@ -353,17 +593,34 @@ summary {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, var(--ink), transparent 22%),
-    linear-gradient(to top, rgba(16, 11, 8, 0.52), transparent 40%);
+    linear-gradient(
+      to right,
+      var(--ink) 0%,
+      rgba(16, 11, 8, 0.98) 28%,
+      rgba(16, 11, 8, 0.86) 38%,
+      rgba(16, 11, 8, 0.48) 49%,
+      transparent 62%
+    ),
+    linear-gradient(to top, rgba(16, 11, 8, 0.56), transparent 42%);
   pointer-events: none;
 }
 
 .hero-media img {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: 58%;
   height: 100%;
   object-fit: cover;
   object-position: center 52%;
   filter: brightness(0.78) contrast(1.08) saturate(0.9);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 10%, #000 32%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 10%, #000 32%);
+  transform: scale(1.055) translate3d(var(--parallax-x), var(--parallax-y), 0);
+  transition: transform 0.18s linear;
+  will-change: transform;
 }
 
 .hero-media-label {
@@ -381,6 +638,14 @@ summary {
   text-align: center;
   text-transform: uppercase;
   backdrop-filter: blur(10px);
+  animation: badge-float 4.5s ease-in-out infinite;
+}
+
+@keyframes badge-float {
+  50% {
+    box-shadow: 0 0 34px rgba(238, 138, 10, 0.18);
+    transform: translateY(-8px) rotate(2deg);
+  }
 }
 
 .hero-media-label span {
@@ -396,6 +661,38 @@ summary {
   font-size: 22px;
   font-weight: 400;
   letter-spacing: 0.05em;
+}
+
+.hero-scroll {
+  position: absolute;
+  z-index: 4;
+  bottom: 28px;
+  left: clamp(36px, 4vw, 76px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.hero-scroll i {
+  width: 1px;
+  height: 38px;
+  display: block;
+  background: linear-gradient(to bottom, var(--ember), transparent);
+  transform-origin: top;
+  animation: scroll-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  50% {
+    opacity: 0.5;
+    transform: scaleY(1.4);
+  }
 }
 
 .ticker {
@@ -1053,8 +1350,18 @@ summary {
   }
 
   .hero {
+    height: auto;
+    min-height: 100svh;
     grid-template-columns: 1fr;
     padding-top: 66px;
+  }
+
+  .hero::after {
+    display: none;
+  }
+
+  .hero-effects {
+    inset: 66px 0 40% 0;
   }
 
   .hero-copy {
@@ -1064,11 +1371,26 @@ summary {
   }
 
   .hero-media {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin-left: 0;
     min-height: min(75vw, 620px);
   }
 
   .hero-media::after {
     background: linear-gradient(to bottom, var(--ink), transparent 18%), linear-gradient(to top, rgba(16, 11, 8, 0.52), transparent 42%);
+  }
+
+  .hero-media img {
+    left: 0;
+    width: 100%;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .hero-scroll {
+    display: none;
   }
 
   .intro,
@@ -1177,6 +1499,14 @@ summary {
 
   .hero h1 {
     font-size: clamp(53px, 16.5vw, 78px);
+  }
+
+  .hero-effects {
+    inset: 66px 0 42% 0;
+  }
+
+  .smoke {
+    opacity: 0.035;
   }
 
   .hero-lead {
@@ -1391,5 +1721,21 @@ summary {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .ember,
+  .cursor-ember {
+    display: none !important;
+  }
+
+  .burn-char {
+    opacity: 1;
+    filter: none;
+    text-shadow: none;
+    transform: none;
+  }
+
+  .hero-media img {
+    transform: none;
   }
 }
