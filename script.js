@@ -186,11 +186,48 @@ const whatsappButton = document.getElementById("whatsapp-submit");
 const contactSection = document.getElementById("offerte");
 const mobileContact = document.querySelector(".mobile-contact");
 
-if (contactSection && mobileContact && "IntersectionObserver" in window) {
-  const contactObserver = new IntersectionObserver(([entry]) => {
-    mobileContact.classList.toggle("is-hidden", entry.isIntersecting);
-  }, { threshold: 0.08 });
-  contactObserver.observe(contactSection);
+if (hero && contactSection && mobileContact) {
+  let heroPassed = hero.getBoundingClientRect().bottom <= 0;
+  let contactInView = false;
+
+  const updateMobileContact = () => {
+    const shouldShow = heroPassed && !contactInView;
+    mobileContact.classList.toggle("is-visible", shouldShow);
+    mobileContact.setAttribute("aria-hidden", String(!shouldShow));
+  };
+
+  if ("IntersectionObserver" in window) {
+    const mobileContactObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.target === hero) {
+          heroPassed = !entry.isIntersecting && entry.boundingClientRect.bottom <= 0;
+        }
+
+        if (entry.target === contactSection) {
+          contactInView = entry.isIntersecting;
+        }
+      });
+
+      updateMobileContact();
+    }, { threshold: 0 });
+
+    mobileContactObserver.observe(hero);
+    mobileContactObserver.observe(contactSection);
+  } else {
+    const checkMobileContact = () => {
+      const heroBounds = hero.getBoundingClientRect();
+      const contactBounds = contactSection.getBoundingClientRect();
+      heroPassed = heroBounds.bottom <= 0;
+      contactInView = contactBounds.top < window.innerHeight && contactBounds.bottom > 0;
+      updateMobileContact();
+    };
+
+    checkMobileContact();
+    window.addEventListener("scroll", checkMobileContact, { passive: true });
+    window.addEventListener("resize", checkMobileContact, { passive: true });
+  }
+
+  updateMobileContact();
 }
 
 function validateForm() {

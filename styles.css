@@ -176,11 +176,15 @@ summary {
   padding: 10px 16px;
   background: var(--cream);
   color: var(--ink);
+  opacity: 0;
+  pointer-events: none;
   transform: translateY(-160%);
-  transition: transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.skip-link:focus {
+.skip-link:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
   transform: translateY(0);
 }
 
@@ -1699,13 +1703,28 @@ summary {
     letter-spacing: 0.09em;
     text-decoration: none;
     text-transform: uppercase;
-    transition: opacity 0.2s ease, transform 0.25s ease;
-  }
-
-  .mobile-contact.is-hidden {
+    visibility: hidden;
     opacity: 0;
     pointer-events: none;
     transform: translateY(140%);
+    transition:
+      visibility 0s linear 0.25s,
+      opacity 0.2s ease,
+      transform 0.25s ease;
+  }
+
+  .mobile-contact.is-visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition-delay: 0s;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .skip-link {
+    display: none;
   }
 }
 
