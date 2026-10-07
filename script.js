@@ -132,17 +132,48 @@ const header = document.querySelector(".site-header");
 const menuButton = document.querySelector(".menu-toggle");
 const siteMenu = document.querySelector(".site-nav");
 const menuLabel = menuButton?.querySelector(".sr-only");
+const pageMain = document.querySelector("main");
+const pageFooter = document.querySelector(".footer");
+const mobileContact = document.querySelector(".mobile-contact");
 
-function setMenu(open) {
+function setMenu(open, { restoreFocus = false } = {}) {
   if (!menuButton || !siteMenu) return;
-  menuButton.setAttribute("aria-expanded", String(open));
-  siteMenu.classList.toggle("is-open", open);
-  document.body.classList.toggle("menu-open", open);
-  if (menuLabel) menuLabel.textContent = open ? "Menu sluiten" : "Menu openen";
+  const mobileMenu = window.innerWidth <= 980;
+  const actuallyOpen = mobileMenu && open;
+
+  menuButton.setAttribute("aria-expanded", String(actuallyOpen));
+  siteMenu.classList.toggle("is-open", actuallyOpen);
+  document.body.classList.toggle("menu-open", actuallyOpen);
+
+  if (mobileMenu && !actuallyOpen) {
+    siteMenu.setAttribute("inert", "");
+  } else {
+    siteMenu.removeAttribute("inert");
+  }
+
+  if (mobileMenu) {
+    siteMenu.setAttribute("aria-hidden", String(!actuallyOpen));
+  } else {
+    siteMenu.removeAttribute("aria-hidden");
+  }
+
+  [pageMain, pageFooter, mobileContact].forEach((element) => {
+    if (!element) return;
+    if (actuallyOpen) element.setAttribute("inert", "");
+    else element.removeAttribute("inert");
+  });
+
+  if (menuLabel) menuLabel.textContent = actuallyOpen ? "Menu sluiten" : "Menu openen";
+  if (restoreFocus) menuButton.focus();
 }
 
 menuButton?.addEventListener("click", () => {
-  setMenu(menuButton.getAttribute("aria-expanded") !== "true");
+  const shouldOpen = menuButton.getAttribute("aria-expanded") !== "true";
+  setMenu(shouldOpen);
+
+  if (shouldOpen) {
+    window.setTimeout(() => siteMenu?.querySelector("a")?.focus({ preventScroll: true }), 40);
+  }
 });
 
 siteMenu?.querySelectorAll("a").forEach((link) => {
@@ -150,12 +181,32 @@ siteMenu?.querySelectorAll("a").forEach((link) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") setMenu(false);
+  const menuOpen = menuButton?.getAttribute("aria-expanded") === "true";
+
+  if (event.key === "Escape" && menuOpen) {
+    setMenu(false, { restoreFocus: true });
+    return;
+  }
+
+  if (event.key !== "Tab" || !menuOpen || !menuButton || !siteMenu) return;
+  const focusable = [menuButton, ...siteMenu.querySelectorAll("a[href]")];
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 });
 
 window.addEventListener("resize", () => {
   if (window.innerWidth > 980) setMenu(false);
 });
+
+setMenu(false);
 
 function updateHeader() {
   header?.classList.toggle("is-scrolled", window.scrollY > 12);
@@ -179,19 +230,21 @@ if ("IntersectionObserver" in window) {
   reveals.forEach((element) => element.classList.add("is-visible"));
 }
 
-document.getElementById("year").textContent = new Date().getFullYear();
+const year = document.getElementById("year");
+if (year) year.textContent = new Date().getFullYear();
 
 const form = document.getElementById("contact-form");
 const whatsappButton = document.getElementById("whatsapp-submit");
 const contactSection = document.getElementById("offerte");
-const mobileContact = document.querySelector(".mobile-contact");
 
 if (hero && contactSection && mobileContact) {
   let heroPassed = hero.getBoundingClientRect().bottom <= 0;
   let contactInView = false;
+  let contactPassed = contactSection.getBoundingClientRect().bottom <= 0;
+  let footerInView = false;
 
   const updateMobileContact = () => {
-    const shouldShow = heroPassed && !contactInView;
+    const shouldShow = heroPassed && !contactInView && !contactPassed && !footerInView;
     mobileContact.classList.toggle("is-visible", shouldShow);
     mobileContact.setAttribute("aria-hidden", String(!shouldShow));
   };
@@ -205,6 +258,11 @@ if (hero && contactSection && mobileContact) {
 
         if (entry.target === contactSection) {
           contactInView = entry.isIntersecting;
+          contactPassed = !entry.isIntersecting && entry.boundingClientRect.bottom <= 0;
+        }
+
+        if (entry.target === pageFooter) {
+          footerInView = entry.isIntersecting;
         }
       });
 
@@ -213,12 +271,16 @@ if (hero && contactSection && mobileContact) {
 
     mobileContactObserver.observe(hero);
     mobileContactObserver.observe(contactSection);
+    if (pageFooter) mobileContactObserver.observe(pageFooter);
   } else {
     const checkMobileContact = () => {
       const heroBounds = hero.getBoundingClientRect();
       const contactBounds = contactSection.getBoundingClientRect();
+      const footerBounds = pageFooter?.getBoundingClientRect();
       heroPassed = heroBounds.bottom <= 0;
       contactInView = contactBounds.top < window.innerHeight && contactBounds.bottom > 0;
+      contactPassed = contactBounds.bottom <= 0;
+      footerInView = Boolean(footerBounds && footerBounds.top < window.innerHeight && footerBounds.bottom > 0);
       updateMobileContact();
     };
 
