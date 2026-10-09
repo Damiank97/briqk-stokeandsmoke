@@ -1590,35 +1590,31 @@ summary {
 
   .site-nav .nav-whatsapp {
     margin-top: 12px;
-    min-height: 56px;
-    padding: 12px 18px;
-    display: grid;
-    grid-template-columns: 22px 1fr auto;
+    min-height: 44px;
+    padding: 9px 0;
+    display: flex;
     align-items: center;
-    border: 1px solid rgba(245, 237, 223, 0.2);
-    background: rgba(245, 237, 223, 0.045);
-    color: var(--cream);
+    gap: 9px;
+    border: 0;
+    background: transparent;
+    color: var(--sand);
     font-family: var(--body);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.09em;
     line-height: 1.2;
   }
 
   .site-nav .nav-whatsapp svg {
     width: 18px;
     height: 18px;
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.6;
+    flex: 0 0 18px;
+    fill: currentColor;
+    color: #25d366;
   }
 
   .site-nav .nav-whatsapp:hover,
   .site-nav .nav-whatsapp:focus-visible {
-    border-color: rgba(238, 138, 10, 0.72);
-    background: rgba(238, 138, 10, 0.08);
     color: var(--ember-bright);
   }
 

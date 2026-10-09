@@ -318,7 +318,7 @@ function requestText() {
     : "Nog niet bekend";
 
   return [
-    "Hoi Everhard, ik wil graag de mogelijkheden voor BBQ catering bespreken.",
+    "Hoi Stoke & Smoke, ik wil graag de mogelijkheden voor BBQ catering bespreken.",
     "",
     `Naam: ${values.naam}`,
     `E-mail: ${values.email}`,
