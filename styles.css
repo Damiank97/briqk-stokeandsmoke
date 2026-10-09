@@ -1590,31 +1590,41 @@ summary {
 
   .site-nav .nav-whatsapp {
     margin-top: 12px;
-    min-height: 44px;
-    padding: 9px 0;
+    min-height: 48px;
+    padding: 10px 2px;
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 12px;
     border: 0;
     background: transparent;
-    color: var(--sand);
+    color: var(--cream);
     font-family: var(--body);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.035em;
     line-height: 1.2;
+    text-transform: none;
     white-space: nowrap;
   }
 
-  .site-nav .nav-whatsapp .whatsapp-icon {
-    width: 18px !important;
-    height: 18px !important;
-    max-width: 18px;
-    max-height: 18px;
-    flex: 0 0 18px;
+  .site-nav .nav-whatsapp .whatsapp-mark {
+    width: 26px;
+    height: 26px;
+    flex: 0 0 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #25d366;
+    box-shadow: 0 0 0 1px rgba(37, 211, 102, 0.25), 0 0 18px rgba(37, 211, 102, 0.16);
+  }
+
+  .site-nav .nav-whatsapp .whatsapp-mark svg {
+    width: 15px !important;
+    height: 15px !important;
+    max-width: 15px;
+    max-height: 15px;
     display: block;
-    fill: #25d366 !important;
-    color: #25d366;
+    fill: #fff !important;
   }
 
   .site-nav .nav-whatsapp:hover,
@@ -1837,7 +1847,7 @@ summary {
   }
 
   .hero-media img {
-    object-position: center 55%;
+    object-position: center 64%;
   }
 
   .hero-media-label {
