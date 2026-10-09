@@ -269,8 +269,38 @@ summary {
   color: var(--ink);
 }
 
-.nav-whatsapp {
-  display: none;
+.site-nav > a.nav-whatsapp {
+  gap: 8px;
+  color: var(--sand);
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.site-nav > a.nav-whatsapp .whatsapp-mark {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #25d366;
+  box-shadow: 0 0 0 1px rgba(37, 211, 102, 0.22);
+}
+
+.site-nav > a.nav-whatsapp .whatsapp-mark svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+  fill: #fff;
+}
+
+.site-nav > a.nav-whatsapp:hover,
+.site-nav > a.nav-whatsapp:focus-visible {
+  color: var(--cream);
 }
 
 .menu-toggle {
@@ -626,10 +656,10 @@ summary {
   right: 0;
   bottom: 0;
   left: auto;
-  width: 58%;
+  width: 68%;
   height: 100%;
   object-fit: cover;
-  object-position: center 52%;
+  object-position: center 60%;
   filter: brightness(0.78) contrast(1.08) saturate(0.9);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 10%, #000 32%);
   mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 10%, #000 32%);
@@ -1588,7 +1618,7 @@ summary {
     text-align: center;
   }
 
-  .site-nav .nav-whatsapp {
+  .site-nav > a.nav-whatsapp {
     margin-top: 12px;
     min-height: 48px;
     padding: 10px 2px;
@@ -1607,7 +1637,7 @@ summary {
     white-space: nowrap;
   }
 
-  .site-nav .nav-whatsapp .whatsapp-mark {
+  .site-nav > a.nav-whatsapp .whatsapp-mark {
     width: 26px;
     height: 26px;
     flex: 0 0 26px;
@@ -1618,7 +1648,7 @@ summary {
     box-shadow: 0 0 0 1px rgba(37, 211, 102, 0.25), 0 0 18px rgba(37, 211, 102, 0.16);
   }
 
-  .site-nav .nav-whatsapp .whatsapp-mark svg {
+  .site-nav > a.nav-whatsapp .whatsapp-mark svg {
     width: 15px !important;
     height: 15px !important;
     max-width: 15px;
@@ -1627,8 +1657,8 @@ summary {
     fill: #fff !important;
   }
 
-  .site-nav .nav-whatsapp:hover,
-  .site-nav .nav-whatsapp:focus-visible {
+  .site-nav > a.nav-whatsapp:hover,
+  .site-nav > a.nav-whatsapp:focus-visible {
     color: var(--ember-bright);
   }
 
