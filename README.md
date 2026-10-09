@@ -19,11 +19,11 @@ Open daarna `http://127.0.0.1:4173/`.
 
 ## Belangrijkste bestanden
 
-- `index.html` — inhoud, metadata en paginastructuur
-- `styles.css` — vormgeving en responsive gedrag
-- `script.js` — mobiel menu, subtiele animaties en contactformulier
-- `assets/` — geoptimaliseerde WebP-afbeeldingen en JPG-bronbestanden
-- `index_legacy.html` — back-up van de vorige startpagina
+- `index.html`: inhoud, metadata en paginastructuur
+- `styles.css`: vormgeving en responsive gedrag
+- `script.js`: mobiel menu, subtiele animaties en contactformulier
+- `assets/`: geoptimaliseerde WebP-afbeeldingen en JPG-bronbestanden
+- `index_legacy.html`: back-up van de vorige startpagina
 
 ## Contactformulier
 
