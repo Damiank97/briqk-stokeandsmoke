@@ -745,6 +745,8 @@ summary {
   overflow: hidden;
   border-block: 1px solid rgba(238, 138, 10, 0.12);
   background: #0b0705;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
 }
 
 .ticker-track {
@@ -760,6 +762,12 @@ summary {
   animation: ticker 36s linear infinite;
 }
 
+.ticker-set {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
 .ticker-track span {
   padding-inline: 30px;
 }
@@ -771,7 +779,7 @@ summary {
 }
 
 @keyframes ticker {
-  to { transform: translateX(-50%); }
+  to { transform: translateX(-25%); }
 }
 
 .section {
@@ -951,8 +959,8 @@ summary {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 42%;
-  filter: saturate(0.8) contrast(1.05);
+  object-position: center center;
+  filter: saturate(0.94) contrast(1.01);
 }
 
 .proof-copy {
