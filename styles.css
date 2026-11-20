@@ -960,7 +960,7 @@ summary {
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  filter: sepia(0.06) saturate(1.08) contrast(1.04) brightness(1.01);
+  filter: sepia(0.16) saturate(1.15) contrast(1.08) brightness(0.76);
 }
 
 .proof-copy {
